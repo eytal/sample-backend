@@ -47,7 +47,7 @@ public class ApiController {
 
         return new ResponseEntity<>(received.getNonce(),HttpStatus.OK);
     }
-
+    @CrossOrigin
     @GetMapping(value="/api/retrieve")
     ResponseEntity<String> retrieve(){
         Message msg = messageService.findTopByOrderByIdDesc();
