@@ -1,0 +1,29 @@
+
+## System settings
+spring:
+  application.name: dsta-sample-app
+  mvc.view:
+    prefix: /
+    suffix: .jsp
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: dsta_user
+    password: test1234
+    driver-class-name: org.h2.Driver
+#   spring.datasource.url = jdbc:h2:file:/data/sample
+#   spring.datasource.url = jdbc:h2:file:C:/data/sample (Windows only)
+  messages:
+    basename: validation
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+## Server setting
+server:
+  port: 8080

@@ -1,0 +1,26 @@
+
+# INSTRUCTIONS:
+# >>> docker-compose up
+
+# After all services are done building, access the following,
+# Server A: https://localhost:8001/
+# Server B: https://localhost:8002/
+# Server C: https://localhost:8003/ 
+
+# To configure builds, see Dockerfile
+
+version: "3.5"
+
+services:
+  alpha:
+    build: "."
+    ports:
+      - "8001:8080"
+  bravo:
+    build: "."
+    ports:
+      - "8002:8080"
+  charlie:
+    build: "."
+    ports:
+      - "8003:8080"
