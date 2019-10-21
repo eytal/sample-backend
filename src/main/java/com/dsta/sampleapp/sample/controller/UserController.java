@@ -1,5 +1,7 @@
 package com.dsta.sampleapp.sample.controller;
 
+import java.util.List;
+
 import com.dsta.sampleapp.sample.model.User;
 import com.dsta.sampleapp.sample.service.SecurityService;
 import com.dsta.sampleapp.sample.service.UserService;
@@ -66,6 +68,8 @@ public class UserController {
 
     @GetMapping({"/","/welcome"})
     public String welcome(Model model) {
+        List<User> userList = userService.findAllById();
+        model.addAttribute("userList", userList);
         return "welcome";
     }
 
