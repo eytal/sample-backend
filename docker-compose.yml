@@ -12,15 +12,18 @@
 version: "3.5"
 
 services:
-  alpha:
-    build: "."
+  # backend:
+  #   build: "."
+  #   ports:
+  #     - "8001:8080"
+  #   depends_on:
+  #     - db
+
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: dsta_user
+      POSTGRES_PASSWORD: test1234
     ports:
-      - "8001:8080"
-  bravo:
-    build: "."
-    ports:
-      - "8002:8080"
-  charlie:
-    build: "."
-    ports:
-      - "8003:8080"
+      - "5432:5432"

@@ -6,23 +6,33 @@ spring:
     prefix: /
     suffix: .jsp
   jpa:
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   datasource:
-    url: jdbc:h2:mem:testdb
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
     username: dsta_user
     password: test1234
-    driver-class-name: org.h2.Driver
+    driverClassName: org.postgresql.Driver
+    initialization-mode: always
+    continue-on-error: true
 #   spring.datasource.url = jdbc:h2:file:/data/sample
 #   spring.datasource.url = jdbc:h2:file:C:/data/sample (Windows only)
   messages:
     basename: validation
-  h2:
-    console:
-      enabled: true
-      path: /h2
+  # h2:
+  #   console:
+  #     enabled: true
+  #     path: /h2
 
 ## Server setting
 server:
