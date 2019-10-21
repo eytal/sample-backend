@@ -32,11 +32,6 @@ public class ApiController {
     @Autowired
     MessageServiceImpl messageService;
 
-    @GetMapping("/")
-    String redirectEvents(){
-        return "redirect:/login";
-    }
-
     @CrossOrigin
     @PostMapping(value="/api/post")
     ResponseEntity<String> returnNonce(@RequestBody Message received, HttpServletRequest request){

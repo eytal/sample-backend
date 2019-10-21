@@ -4,6 +4,7 @@ import com.dsta.sampleapp.sample.model.User;
 import com.dsta.sampleapp.sample.service.SecurityService;
 import com.dsta.sampleapp.sample.service.UserService;
 import com.dsta.sampleapp.sample.utils.UserValidator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
@@ -39,28 +40,31 @@ public class UserController {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
+            System.out.println("has errors");
             return "registration";
         }
-
         userService.save(userForm);
-
-        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/welcome";
+        //securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+        //System.out.println("redirect to welcome");
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+        if (error != null){
+             model.addAttribute("error", "Your username and password is invalid.");
+        }
 
-        if (logout != null)
+        if (logout != null){
             model.addAttribute("message", "You have been logged out successfully.");
-
+        }
+        // if (error == null && logout == null){
+        //     return "welcome";
+        // }
         return "login";
     }
 
-    @GetMapping({"/welcome"})
+    @GetMapping({"/","/welcome"})
     public String welcome(Model model) {
         return "welcome";
     }
