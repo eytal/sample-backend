@@ -37,18 +37,30 @@
                             Users
                         </h2>
                     </p>
+                    <p>
+                        <span class="text-white">${message}</span>
+                    </p>
                     <table class="table table-dark table-bordered">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Username</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${userList}" var="user">
+                            <c:forEach items="${userList}" var="user" varStatus="loop">
                                 <tr>
-                                    <th scope="row">${user.id} </th>
+                                    <th scope="row">${loop.count} </th>
                                     <td> ${user.username} </td>
+                                    <td>
+                                        <c:if test="${!user.username.equals(loggedInUser)}">
+                                            <form method="POST" action="${contextPath}/delete/${user.username}">
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                            </form>
+                                        </c:if>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

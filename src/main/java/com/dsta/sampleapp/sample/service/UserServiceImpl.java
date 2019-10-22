@@ -47,4 +47,8 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllById(){
         return userRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
     }
+    @Override
+    public void delete(User user){
+        userRepository.delete(user);
+    }
 }

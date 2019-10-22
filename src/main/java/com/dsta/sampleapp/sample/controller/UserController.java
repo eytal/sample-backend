@@ -9,13 +9,15 @@ import com.dsta.sampleapp.sample.utils.UserValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 
 //https://hellokoding.com/registration-and-login-example-with-spring-security-spring-boot-spring-data-jpa-hsql-jsp/
 @ComponentScan("com.dsta.sampleapp.sample.utils")
@@ -31,7 +33,7 @@ public class UserController {
     private UserValidator userValidator;
 
     @GetMapping("/registration")
-    public String registration(Model model){
+    public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
         return "registration";
@@ -46,32 +48,49 @@ public class UserController {
             return "registration";
         }
         userService.save(userForm);
-        //securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-        //System.out.println("redirect to welcome");
+        // securityService.autoLogin(userForm.getUsername(),
+        // userForm.getPasswordConfirm());
+        // System.out.println("redirect to welcome");
         return "redirect:/login";
     }
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
-        if (error != null){
-             model.addAttribute("error", "Your username and password is invalid.");
+        if (error != null) {
+            model.addAttribute("error", "Your username and password is invalid.");
         }
 
-        if (logout != null){
+        if (logout != null) {
             model.addAttribute("message", "You have been logged out successfully.");
         }
         // if (error == null && logout == null){
-        //     return "welcome";
+        // return "welcome";
         // }
         return "login";
     }
 
-    @GetMapping({"/","/welcome"})
-    public String welcome(Model model) {
-        List<User> userList = userService.findAllById();
-        model.addAttribute("userList", userList);
-        return "welcome";
+    @PostMapping("delete/{username}")
+    public String delete(Model model, @PathVariable(value = "username") String username) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //System.out.println(auth.getName());
+        if (!auth.getName().equals(username)) {
+            User toDelete = userService.findByUsername(username);
+            userService.delete(toDelete);
+            model.addAttribute("message", "User has been deleted successfully");
+        }
+        return "redirect:/welcome";
     }
 
+    @GetMapping({ "/", "/welcome" })
+    public String welcome(Model model, String message) {
+        List<User> userList = userService.findAllById();
+        model.addAttribute("userList", userList);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("loggedInUser", auth.getName());
+        if(message != null){
+            model.addAttribute("message", "User has been deleted successfully");
+        }
+        return "welcome";
+    }
 
 }
